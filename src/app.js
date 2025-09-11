@@ -2,32 +2,22 @@ const express = require("express");
 
 const app = express();
 
-// All API Methods give same result due to order of code.
-app.use("/user", (req, res) => {
-  res.send("Order plays important role");
-});
 
-// Only GET Calls to handle from /user
-app.get("/user", (req, res) => {
+// Only GET Calls to handle from /user, /user/asd, /user/1
+app.get("/user/:userId", (req, res) => {
+      console.log(req.params);
   res.send({ firstName: "Sarthak", techStack: "NodeJs" });
 });
 
-//  Only Post Call to handle from /user
-
-app.post("/user", (req, res) => {
-  res.send({ status: "200 OK", Data: "Saved Successfully!!" });
-});
-
+// Complex Routing Methods :
+// '/ab?c' it will work on route '/ac' and '/abc' also wprks
+// '/ab+c' it will only work on '/abbbc', '/abbc' but not in '/abcc' rotes.
+// '/ab*cd' it will work on anything between ac and cd '/abfsdffgdfgdgcd'
+// Group together and apply '/a(bc)?d' means 'bc' is optional not work on '/acd'
+app.get("/abc", (req, res) => {
+  res.send({ firstName: "Sarthak", techStack: "NodeJs" });
+})
 
 app.listen(8888, () => {
   console.log("Server is Connected to port!!");
 });
-
-
-app.use("/test", (req, res) => {
-  res.send("Hello From the server to port 8888");
-});
-app.use("/", (req, res) => {
-  res.send("Main Page of port 8888");
-});
-
