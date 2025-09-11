@@ -12,3 +12,11 @@
 - Listening requests from port
 - Write Request handlers /test, /, /head
 - Install nodemon and update script inside package.json
+- Initialise git
+- .gitignore
+- Create remote repo on github don't enable README.MD option
+- Push all code to remote origin -  'git add .' , git commit -m "Branch_Name",  Three commands to push code remote repo 
+- Play with Route, Route Extensions ex./test, / , /head
+- Order of routes matters a lot
+- Install Postman create workspace/collection/ Test API Calls
+- Write logic to handle GET, POST, DELETE, API calls and test on Postman
