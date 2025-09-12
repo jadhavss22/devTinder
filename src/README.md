@@ -24,3 +24,8 @@
 - Use of regex in the routes /a, / , /.*fly$
 - Reading query params in the routes.
 - Reading dynamic routes.
+
+- Handling Multiple Routes - Play With Code
+- next()
+- next function and errors along with res.send()
+- app.use("/route", rh, [rh2,rh3], rh4, rh5)
