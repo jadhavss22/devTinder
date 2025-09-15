@@ -6,7 +6,7 @@
 - Use of "-g" while npm install 
 - Difference between Caret and Tilde ('^' and '~')
 
-# Creating Server
+# ✨ Creating Server 🚀
 - Import Express
 - Create web server using express()
 - Listening requests from port
@@ -25,7 +25,13 @@
 - Reading query params in the routes.
 - Reading dynamic routes.
 
+## ⚙️🚦 Middlewares & 🔧 Error Handlers 
 - Handling Multiple Routes - Play With Code
 - next()
 - next function and errors along with res.send()
 - app.use("/route", rh, [rh2,rh3], rh4, rh5)
+- What is Middleware? Why do we need it?
+- How ExpressJS handles request behind scenes?
+- Difference between .use() and .all()
+- Write dummy auth middleware for admin
+- Write dummy auth middleware for all user routes, except user/login
