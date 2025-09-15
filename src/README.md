@@ -35,3 +35,4 @@
 - Difference between .use() and .all()
 - Write dummy auth middleware for admin
 - Write dummy auth middleware for all user routes, except user/login
+- Error Handelling using app.use("/",(err,req,res,next)=> if(err){res.status(500).send("Something Went Wrong !!")})
