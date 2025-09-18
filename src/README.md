@@ -6,7 +6,7 @@
 - Use of "-g" while npm install 
 - Difference between Caret and Tilde ('^' and '~')
 
-# ✨ Creating Server 🚀
+## 🌐 Creating Server 🚀
 - Import Express
 - Create web server using express()
 - Listening requests from port
@@ -36,3 +36,13 @@
 - Write dummy auth middleware for admin
 - Write dummy auth middleware for all user routes, except user/login
 - Error Handelling using app.use("/",(err,req,res,next)=> if(err){res.status(500).send("Something Went Wrong !!")})
+
+## 🛢️ Database, Schema & Models 🧩 | 📝 MongoDB, Mongoose🔗
+- Create a cluster on MongoDB official site and create a user(Mongo Atlas)
+- Install mongoose library
+- Connect your application to database "connectionString/ db_name"
+- Call connectDB function and connect database before starting application on 8888.
+- Create a userSchema & user Model
+- Create POST /signup API to add data to db.
+- Push some doscuments through API calls from postman
+- Error Handeling using try, catch
