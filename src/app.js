@@ -3,20 +3,19 @@ const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
 
+app.use(express.json());
 // Creating API
-app.post("/signup", async(req, res) => {
+app.post("/signup", async (req, res) => {
   // Create new instance
-  console.log("user",User);
-  
-  const user = new User({
-    firstName: "Christiano",
-    lastName: "Ronaldo",
-    emailId: "cr@7.com",
-    password: "Christiano@07",
-  });
-
-  await user.save(); // data need to save to DB return promise
-  res.send("User Created Successfully...");
+  console.log(req.body);
+   const user = new User(req.body);
+  try {
+     await user.save(); // data need to save to DB which return as promise
+    res.send("User Created Successfully...");
+    
+  } catch (error) {
+    res.status(500).send("Something Went Wrong!!")
+  }
 });
 
 

@@ -45,4 +45,6 @@
 - Create a userSchema & user Model
 - Create POST /signup API to add data to db.
 - Push some doscuments through API calls from postman
-- Error Handeling using try, catch
+- Error Handeling using try, catch 
+- Add the express.json middleware to your app
+- Make your signup API dynamic to receive data from end user
