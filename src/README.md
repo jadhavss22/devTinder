@@ -25,7 +25,7 @@
 - Reading query params in the routes.
 - Reading dynamic routes.
 
-## ⚙️🚦 Middlewares & 🔧 Error Handlers 
+## ⚙️🚦 Middlewares & Error Handlers 🔧
 - Handling Multiple Routes - Play With Code
 - next()
 - next function and errors along with res.send()
@@ -46,5 +46,21 @@
 - Create POST /signup API to add data to db.
 - Push some doscuments through API calls from postman
 - Error Handeling using try, catch 
+
+## Creating API 🔁 — Sync/loop (RESTful actions, CRUD).
 - Add the express.json middleware to your app
 - Make your signup API dynamic to receive data from end user
+- User.findOne with duplicate email ids, which object returns
+- API - GET user by emailId
+- API - Feed API to get all users from DB
+- Differrence between PATCH and PUT
+- API - Update a user by ID and for pratice by emailId
+
+## Data Sanitization & Schema Validations
+- Explore schematype options from the documentation
+- Add required, unique, trim, min/max Lingth, min/max.
+- Create custom validator function for gender
+- Add timestamps to the userSchema
+- Add API level validation on PATCH an PUT request & signup POST API
+- Data sanitization add API validation for each field
+- Install & explore validator functions and use for fields.
