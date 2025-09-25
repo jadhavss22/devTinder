@@ -64,3 +64,11 @@
 - Add API level validation on PATCH an PUT request & signup POST API
 - Data sanitization add API validation for each field
 - Install & explore validator functions and use for fields.
+- NEVER TRUST req.body
+
+## Encrypting Passwords
+- Validate data in Signup API
+- Install bcrypt package
+- Create passwordHash using bcypt.hash & save the user is encrypted password
+- Create login API
+- Compare passwords and throw error if email or password is invalid
