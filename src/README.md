@@ -47,7 +47,7 @@
 - Push some doscuments through API calls from postman
 - Error Handeling using try, catch 
 
-## Creating API 🔁 — Sync/loop (RESTful actions, CRUD).
+## Creating API — Sync/loop (RESTful actions, CRUD) 🔁
 - Add the express.json middleware to your app
 - Make your signup API dynamic to receive data from end user
 - User.findOne with duplicate email ids, which object returns
@@ -56,7 +56,7 @@
 - Differrence between PATCH and PUT
 - API - Update a user by ID and for pratice by emailId
 
-## Data Sanitization & Schema Validations
+## 🧹 Data Sanitization & Schema Validations 🧱
 - Explore schematype options from the documentation
 - Add required, unique, trim, min/max Lingth, min/max.
 - Create custom validator function for gender
@@ -66,9 +66,33 @@
 - Install & explore validator functions and use for fields.
 - NEVER TRUST req.body
 
-## Encrypting Passwords
+## 🛡️ Encrypting Passwords
 - Validate data in Signup API
 - Install bcrypt package
 - Create passwordHash using bcypt.hash & save the user is encrypted password
 - Create login API
-- Compare passwords and throw error if email or password is invalid
+- Compare passwords and throw error if email or password is invalid.
+
+## 🔐 Authentication, 💫 JWT & Cookies 🍪 
+- Install cookie-parser
+- Just send dummy cookie to user
+- Create GET /profile and check you get cookie back.
+- Install jsonwebtoken
+- In Login API, after Email & pwd validation create JWT and send it back to user.
+- userAuth middleware and add it to user API's
+- Set expiry of JWT token, cookie to 3 min
+- Create userSchema methods to get JWT() - Utility Method make code clean, crisp and readable.
+- Create userSchema method for password to compare dbPassword with passwordInputByUser.
+
+## Diving into API's & Express Router
+- Explore tinder API's
+- Create alist of all API's you can think of in DEV Tinder
+- Group multipe routes under respective routers
+- Read documentation for express.Router()
+- Create routes folder for managing auth, profile, request routers
+- Create authRouter, profileRouter, requestRouter
+- Import these routers in app.js
+- Create POST/logout API
+- Create POST /profile/edit
+- Create POST /profile/password API => forget password API
+- Make you validate all data in every POST API 

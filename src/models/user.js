@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator")
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -71,6 +73,21 @@ if (!validator.isStrongPassword(value)) {
 }
 
 );
+
+userSchema.methods.getJWT = async function () {
+
+  const user = this
+  const token = await jwt.sign({_id : user._id},"Devtinder$987")
+
+  return token
+}
+userSchema.methods.validatePwd = async function(pwdInputByUser) {
+  const user = this
+  const passwordHash = user.password
+
+  const isPasswordValid = await bcrypt.compare(pwdInputByUser,passwordHash)
+  return isPasswordValid
+}
 
 // Create Model
 

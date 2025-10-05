@@ -1,64 +1,19 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
-const User = require("./models/user");
-const bcrypt = require("bcrypt");
-const { signupValidation } = require("./Utilis/validation");
+const {authRouter}= require("./routes/user")
+const {profileRouter} = require("./routes/profile")
+const {requestRouter} = require("./routes/request")
 
-app.use(express.json());
-
-// Creating Signup API
-app.post("/signup", async (req, res) => {
-  try {
-    // Validation of the user
-    signupValidation(req);
-
-    const { firstName,lastName,emailId,password } = req.body;
-    // Encypt password
-    const pwdHash = await bcrypt.hash(password, 8);
-
-    // Create new instance
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password: pwdHash,
-    });
-
-    await user.save(); // data need to save to DB which return as promise
-    res.send("User Created Successfully...");
-  } catch (error) {
-    res.status(500).send("ERROR : " + error.message);
-  }
-});
-
-app.post("/login", async(req,res)=>{
-  try{
-  const {emailId, password} = req.body
-
-  const user = await User.findOne({emailId:emailId})
-  if(!user){
-    throw new Error("Invalid Credential!!");
-  }
-  const isPasswordValid = await bcrypt.compare(password,user.password)
-  if (isPasswordValid) {
-    res.send("Login Successful...")
-  } else {
-    throw new Error("Invalid Credentials!!");
-    
-  }
-}catch(err){
-throw new Error("ERROR :"+err.message);
-
-}
-})
-
+app.use("/",authRouter)
+app.use("/",profileRouter)
+app.use("/",requestRouter)
 // Fetching Single User API
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;
 
   try {
-    const users = await User.find({});
+    const users = await User.find({emailId :userEmail});
     if (users.length == 0) {
       res.status(400).send("Invalid emailId!!");
     } else {
