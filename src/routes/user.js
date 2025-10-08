@@ -1,15 +1,12 @@
 
 const express = require("express")
-const userRouter = express.Router()
-const app = express();
-const User = require("./models/user");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { signupValidation } = require("../Utilis/validation");
-const cookieParser = require("cookie-parser")
-const {userAuth} = require("../middlewares/auth");
 
-app.use(express.json());
-app.use(cookieParser())
+const {userAuth} = require("../middlewares/auth");
+const userRouter = express.Router()
+
 
 userRouter.post("/signup", async (req, res) => {
   try {
@@ -47,8 +44,10 @@ userRouter.post("/login",userAuth, async(req,res)=>{
   const isPasswordValid =  await user.validatePwd(password)
   if (isPasswordValid) {
       // Create JWT Token
-  const Token = await user.getJWT()
-  res.cookie("Token",Token,{expires: new Date(Date.now() + 3 * 60 * 1000)})
+  const token = await user.getJWT()
+  console.log("token2",token);
+  
+  res.cookie("token",token,{expires: new Date(Date.now() + 3 * 60 * 1000)})
   res.send("Login Successful...")
   }else{
     throw new Error("Invalid Credentials!!");
@@ -59,7 +58,9 @@ userRouter.post("/login",userAuth, async(req,res)=>{
 })
 
 userRouter.post("/logout", async (req,res)=> {
-  res.cookie("Token",null,{expires : new Date(Date.now())}).send("User Logout Successfully.....")
+  res.cookie("token",null,{expires : new Date(Date.now())}).send("User Logout Successfully.....")
 })
+
+// Pending to write Forget password API
 
 module.exports = userRouter

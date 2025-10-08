@@ -1,13 +1,16 @@
 const express = require("express");
 const connectDB = require("./config/database");
+const cookieParser = require("cookie-parser")
+const userRouter= require("./routes/user")
+const profileRouter = require("./routes/profile")
+const requestRouter = require("./routes/request")
 const app = express();
-const {authRouter}= require("./routes/user")
-const {profileRouter} = require("./routes/profile")
-const {requestRouter} = require("./routes/request")
-
-app.use("/",authRouter)
+app.use(cookieParser())
+app.use("/",userRouter)
 app.use("/",profileRouter)
 app.use("/",requestRouter)
+
+
 // Fetching Single User API
 app.get("/user", async (req, res) => {
   const userEmail = req.body.emailId;

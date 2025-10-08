@@ -90,5 +90,4 @@ userSchema.methods.validatePwd = async function(pwdInputByUser) {
 }
 
 // Create Model
-
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema); // User is my model name

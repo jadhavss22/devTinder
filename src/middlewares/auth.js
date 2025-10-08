@@ -1,29 +1,24 @@
 
 const jwt = require('jsonwebtoken')
+const User = require("../models/user");
 
-
-authAdmin = ("/admin", (req, res, next) => {
-  const token = "asd";
-  const adminAuthorised = token == "asd";
-  if (!adminAuthorised) {
-    res.status(401).send("Unauthorised Access!!");
-  } else {
-    next();
-  }
-});
-const userAuth = ("/user", async(req,res,next)=>{
+const userAuth =  async(req,res,next)=>{
   try {
   // Reading token from cookies
-  const {Token} = req.cookies
-  if(!Token){
+  const {token} = req.cookies
+  console.log("token1",token);
+  
+  if(!token){
     throw new Error("Invalid Credentials!!");
     
   }
   //  Validate token
-  const decodeMsg = await jwt.verify(Token,"Devtinder$987")
+  const decodeMsg = await jwt.verify(token,"Devtinder$987")
+  console.log("decodeMsg",decodeMsg);
+  
   //  Find the user
   const {_id} = decodeMsg
-  const user = User.findById(_id)
+  const user = await User.findById(_id)
   if(!user){
     throw new Error("User Does not Exist!!");
   }else{
@@ -33,10 +28,9 @@ const userAuth = ("/user", async(req,res,next)=>{
   } catch (error) {
    res.status(400).send("ERROR: "+ error.message)
   }
-})
+}
 
 
 module.exports ={
-    authAdmin,
     userAuth
 }
