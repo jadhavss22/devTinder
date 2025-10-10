@@ -18,6 +18,17 @@ const connectionRequestschema = new mongoose.Schema({
         }
     }
 },{timestamps : true})
+ 
+connectionRequestschema.index({fromUserId:1, toUserId:1}) // Compound Index
 
-// Create Model and export
+connectionRequestschema.pre("save",function (next) {
+    // Get particular instance of collection
+    const connectionRequest = this
+    if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
+        throw new Error("Can't Send Connection Request to yourself !!!");
+    }
+    next()
+})
+
+// Create Model name as ConnectionRequest and export
 module.exports = mongoose.model("ConnectionRequest",connectionRequestschema)

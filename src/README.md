@@ -96,3 +96,14 @@
 - Create POST /profile/edit
 - Create POST /profile/password API => forget password API
 - Make you validate all data in every POST API 
+
+## Index in MongoDB
+- Create connection Request Schema
+- Send connection Request API and add validation
+- Handle corner cases
+- schema.pre("save") function 
+- $or and $and query in Mongoose
+- Read more about index in MongoDB
+- Why do we need index in DB?
+- What is advantage and disadvantage of creating?
+- Read mongoDB article on compound index

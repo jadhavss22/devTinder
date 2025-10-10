@@ -3,8 +3,6 @@ const express = require("express")
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { signupValidation } = require("../Utilis/validation");
-
-const {userAuth} = require("../middlewares/auth");
 const userRouter = express.Router()
 
 
@@ -33,7 +31,7 @@ userRouter.post("/signup", async (req, res) => {
 });
 
 
-userRouter.post("/login",userAuth, async(req,res)=>{
+userRouter.post("/login", async(req,res)=>{
   try{
   const {emailId, password} = req.body
   const user = await User.findOne({emailId:emailId})
