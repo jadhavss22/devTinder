@@ -1,16 +1,20 @@
 
 const express = require("express")
 const profileRouter = express.Router()
-
 const {userAuth} = require("../middlewares/auth");
 const {validateEditProfile} = require("../Utilis/validation")
+const User = require("../models/user")
+
 
 profileRouter.get("/profile/view",userAuth, async(req,res)=>{
+  const userEmail = req.query.emailId; 
   try {
-    const user = req.user
-    res.send(user)
+    const user = await User.findOne({ emailId: userEmail });
+    if (!user) return res.status(404).send("User not found");
+    res.status(200).json(user);
   } catch (error) {
-    throw new Error("ERROR :"+ error.message);   
+    throw new Error("ERROR :"+error.message);
+    
   }
   })
 

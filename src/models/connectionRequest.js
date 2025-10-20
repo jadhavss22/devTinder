@@ -1,17 +1,19 @@
 const mongoose = require("mongoose")
 
 const connectionRequestschema = new mongoose.Schema({
-    fromRequest : {
+    fromUserId : {
         type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
         required : true
     },
-     toRequest : {
+     toUserId : {
         type : mongoose.Schema.Types.ObjectId,
-        required : true
+        ref : "User", 
+         required : true
     },
     status : {
         type : String,
-        required : true,
+         required : true,
         enum : {
             values :['igonre','interested','accepted','rejected'],
             message : '{VALUE} is incorrect for the status type'
@@ -24,6 +26,7 @@ connectionRequestschema.index({fromUserId:1, toUserId:1}) // Compound Index
 connectionRequestschema.pre("save",function (next) {
     // Get particular instance of collection
     const connectionRequest = this
+    
     if (connectionRequest.fromUserId.equals(connectionRequest.toUserId)) {
         throw new Error("Can't Send Connection Request to yourself !!!");
     }

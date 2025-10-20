@@ -41,20 +41,17 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number,
-    default: "This is the default field",
+   // default: "This is the default field",
     min: 18,
     max : 60
   },
   password: {
     type: String,
-    minLength : 6,
-    maxLength : 20,
     required : true,
     validate(value){
 // match :[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,"At least one uppercase, one lowercase, one digit, one special char"]
 if (!validator.isStrongPassword(value)) {
   throw new Error("Enter a Strong Password :"+ value);
-  
 }
     }
   },

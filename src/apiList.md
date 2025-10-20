@@ -11,10 +11,9 @@ POST       /profile/password
 DELETE     /profile/delete
 
 ## connectionRequestRouter
-GET         /feed
-POST        /requestSend/interested/:userId
+POST        /requestSend/interested/:userId  ----- Write two API dynamically /requestSend/:status/:userId
 POST        /requestSend/reject/:userId
-POST        /review/accept/:requestId
+POST        /review/accept/:requestId   ----- Write two API dynamically /review/:status/:requestId (ObjectId)
 POST        /review/reject/:requestId
 
 ## userRouter

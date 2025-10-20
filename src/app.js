@@ -3,29 +3,14 @@ const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser")
 const userRouter= require("./routes/user")
 const profileRouter = require("./routes/profile")
-const requestRouter = require("./routes/request")
+const requestRouter = require("./routes/request");
+const authRouter = require("./routes/auth");
 const app = express();
 app.use(cookieParser())
-app.use("/",userRouter)
+app.use("/",authRouter)
 app.use("/",profileRouter)
 app.use("/",requestRouter)
-
-
-// Fetching Single User API
-app.get("/user", async (req, res) => {
-  const userEmail = req.body.emailId;
-
-  try {
-    const users = await User.find({emailId :userEmail});
-    if (users.length == 0) {
-      res.status(400).send("Invalid emailId!!");
-    } else {
-      res.send(users);
-    }
-  } catch (error) {
-    res.status(500).send("Something Went Wrong!!");
-  }
-});
+app.use("/",userRouter)
 
 // Fetching All Users API
 app.get("/feed", async (req, res) => {

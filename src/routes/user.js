@@ -1,64 +1,85 @@
-
-const express = require("express")
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const { signupValidation } = require("../Utilis/validation");
-const userRouter = express.Router()
-
-
-userRouter.post("/signup", async (req, res) => {
+const express = require("express");
+const { userAuth } = require("../middlewares/auth");
+const userRouter = express.Router();
+const ConnectionRequest = require("../models/connectionRequest");
+const User = require("../models/user")
+// GET all pending request for loggedIn user
+userRouter.get("/user/requests", userAuth, async (req, res) => {
   try {
-    // Validation of the user
-    signupValidation(req);
-
-    const { firstName,lastName,emailId,password } = req.body;
-    // Encypt password
-    const pwdHash = await bcrypt.hash(password, 8);
-
-    // Create new instance
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password: pwdHash,
+    const loggedInUser = req.user;
+    const connectionRequest = await ConnectionRequest.find({
+      $or: [
+        { status: "interested", toUserId: loggedInUser._id },
+        { fromUserId: loggedInUser, status: "interested" },
+      ],
+    }).populate("fromUserId", "firstName lastName");
+    res.json({
+      message: "Data Fetch Successfully",
+      data: connectionRequest,
     });
-
-    await user.save(); // data need to save to DB which return as promise
-    res.send("User Created Successfully...");
   } catch (error) {
-    res.status(500).send("ERROR : " + error.message);
+    console.log("ERROR :" + error.message);
   }
 });
 
 
-userRouter.post("/login", async(req,res)=>{
-  try{
-  const {emailId, password} = req.body
-  const user = await User.findOne({emailId:emailId})
-  
-  if(!user){
-    throw new Error("Invalid Credential!!");
-  }
-  const isPasswordValid =  await user.validatePwd(password)
-  if (isPasswordValid) {
-      // Create JWT Token
-  const token = await user.getJWT()
-  console.log("token2",token);
-  
-  res.cookie("token",token,{expires: new Date(Date.now() + 3 * 60 * 1000)})
-  res.send("Login Successful...")
-  }else{
-    throw new Error("Invalid Credentials!!");
-  }
-}catch(err){
-    throw new Error("ERROR :"+err.message);
-  }
-})
 
-userRouter.post("/logout", async (req,res)=> {
-  res.cookie("token",null,{expires : new Date(Date.now())}).send("User Logout Successfully.....")
-})
+// GET list of all users have connections with user
+userRouter.get("/user/connections", userAuth, async (req, res) => {
+  const loggedInUser = req.user;
 
-// Pending to write Forget password API
+  const connectionRequest = await ConnectionRequest.find({
+    $or: [
+      { fromUserId: loggedInUser._id, status: "accepted" },
+      { toUserId: loggedInUser._id, status: "accepted" },
+    ],
+  })
+    .populate("fromUserId", "firstName lastName")
+    .populate("toUserId", "firstName lastName");
+  const data = connectionRequest.map((row) => {
+    if (row.fromUserId._id.toString() == loggedInUser._id.toString()) {
+      return row.toUserId;
+    }
+    return row.fromUserId;
+  });
 
-module.exports = userRouter
+  res.json({ data });
+});
+
+
+// GET list of all users make new connections
+userRouter.get("/user/feed", userAuth, async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const page= parseInt(req.query.page)
+    let limit= parseInt(req.query.limit)
+     limit = limit > 50 ? 50 : limit
+     const skip = (page-1)*limit
+// GET all the connection requests (sent + receive)
+    const connectionRequest = await ConnectionRequest.find({
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    })
+  .select("fromUserId toUserId")
+  .populate("fromUserId", "firstName lastName")
+  .populate("toUserId", "firstName lastName");
+   
+  const hideUserFromFeed = new Set()    // I want unique id's only no duplicates
+  connectionRequest.forEach((req)=>{
+    hideUserFromFeed.add(req.fromUserId.toString())
+    hideUserFromFeed.add(req.toUserId.toString())
+  }) 
+// I want users other than me and connection request send/receive by users
+  const users = await User.find({
+    $and :[
+      {_id : {$ne : loggedInUser._id}},
+      {_id : {$nin : Array.from(hideUserFromFeed)}}
+    ]
+  }).select("firstName lastName").skip(skip).limit(limit)
+
+      res.json({data: users})
+  } catch (error) {
+    res.status(400).send("ERROR :" + error.message);
+  }
+});
+
+module.exports = userRouter;
